@@ -1,18 +1,19 @@
 var count = prompt("Количесво выстрелов:") - 0;
 if (foolTest(count) == 0) {
     var isRandom = prompt("Стрелять случайно?") == "y";
-    shotToTarget(count, isRandom);
+    var radRandom = isRandom ? prompt("Введите радиус случайного радиуса: ") : 1;
+    shotToTarget(count, isRandom, radRandom);
     }
 
 function rand(min,max){
     return Math.random() * (max - min) + min
 }
 
-function shotToTarget(count,isRandom){
+function shotToTarget(count,isRandom, radRandom){
     var points = 0;
     for(var i = 0; i < count; i++){
-        var x = isRandom?rand(-1,1):prompt("x: ") - 0 + rand(-0.1, 0.1);
-        var y = isRandom?rand(-1,1):prompt("y: ") - 0 + rand(-0.1, 0.1);
+        var x = isRandom?rand(-radRandom,radRandom):prompt("x: ") - 0 + rand(-0.1, 0.1);
+        var y = isRandom?rand(-radRandom,radRandom):prompt("y: ") - 0 + rand(-0.1, 0.1);
         points += shot(x,y,i);
 
         console.log("Промежуточная сумма очков: ", points);
@@ -22,47 +23,23 @@ return points;
 }
 
 function shotToPoint(x,y){
-    if (x == 0 && y == 0){
-        return 6;
-    }
-    else{
-        return 0;
-    }
+    return (x == 0 && y == 0) ? 6 : 0
 }
 
 function shotToStar(x,y){
-    if((Math.abs(y)) <= 2 / (Math.abs(x) + 1) - 1 && Math.max(Math.abs(y),Math.abs(x)) <= 1){
-        return 1;
-    }else{
-        return 0;
-    }
+    return ((Math.abs(y)) <= 2 / (Math.abs(x) + 1) - 1 && Math.max(Math.abs(y),Math.abs(x)) <= 1) ? 1 : 0
 }
 
 function shotToRhomb(x,y){
-    if (Math.abs(x) + Math.abs(y)<=1){
-        return 1;
-    }
-    else{
-        return 0;
-    }
+    return (Math.abs(x) + Math.abs(y)<=1) ? 1 : 0
 }
 
 function shotToCircle(x,y){
-    if (Math.sqrt(x**2 + y**2)<= 1){
-        return 1;
-    }
-    else{
-        return 0;
-    }
+    return (Math.sqrt(x**2 + y**2)<= 1) ? 1 : 0
 }
 
 function shotToSquare(x,y){
-    if (x<=1 && x>=-1 && y>=-1 && y<=1){
-        return 1;
-    }
-    else{
-        return 0;
-    }
+    return (x<=1 && x>=-1 && y>=-1 && y<=1) ? 1 : 0
 }
 
 function shot(x,y,i){
@@ -73,7 +50,7 @@ function shot(x,y,i){
 }
 
 function foolTest(count){
-    if (count == 0) {
+    if (count <= 0) {
         console.log("Выстрелов не будет");
         return 1
     }else{
